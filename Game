@@ -16,8 +16,8 @@ Baez baezHead;
 float g = 1;
 float up;
 float ground = 300;
-boolean gameOver=false;
 boolean jump;
+boolean begin=true;
 int obstacleTimer = 0;
 int minimumTimeBetweenObstacles = 60;
 int randomAddition = 0;
@@ -60,12 +60,13 @@ void draw() {
   stroke(90);
   strokeWeight(3);
   line(0, ground+39, 999, ground+39);
+
     if(dead == true){
     yell.play();
-    textSize(30);
+    textSize(27);
     fill(200);
     text("Creme Cheese Points earned: "+currentScore,20, 100);
-    text("Press Space to avoid more veggies", 20, 150);
+    text("Press Space to avoid more fruits and veggies", 20, 150);
     resetObstacles();
     }else{
     updateObstacles();
@@ -74,7 +75,8 @@ void draw() {
   }
     if(score>record){record=score;}
   scoreboard();
-}
+ }
+
 
 void updateObstacles(){
   obstacleTimer++;
@@ -135,11 +137,10 @@ void addObstacle(){
 
 
 
-
-
  
 void keyPressed(){
 if(key==' '){
+  begin=false;
   up = -1;
     jump=true;
   if(dead){dead=false;}
