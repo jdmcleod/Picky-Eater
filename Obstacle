@@ -1,0 +1,51 @@
+public class Obstacle{
+  int obstacleTimer = 0;
+int minimumTimeBetweenObstacles = 60;
+int randomAddition = 0;
+
+void updateObstacles(){
+  obstacleTimer++;
+  speed+=0.002;
+  if(obstacleTimer>minimumTimeBetweenObstacles + randomAddition){
+    addObstacle();
+  }
+  
+  moveObstacles();
+  showObstacles();
+}
+
+void moveObstacles(){
+  for (int i = 0; i< obstacles.size(); i++) {
+    obstacles.get(i).move(speed);
+    if (obstacles.get(i).x < 0) { 
+      obstacles.remove(i);
+      i--;
+    }
+  }
+}
+
+void addObstacle(){
+  int tempInt;
+   tempInt = floor(random(6));
+   Veggie temp = new Veggie(tempInt);
+   obstacles.add(temp);
+   tempInt+=3;
+  randomAddition = floor(random(50));
+  obstacleTimer=0;
+  }
+  
+  void showObstacles(){
+   for(int i = 0;i<obstacles.size();i++){
+    obstacles.get(i).show(); 
+   }
+  }
+  
+  void resetObstacles(){
+   speed=10;
+   for (int i = 0; i< obstacles.size(); i++) {
+      obstacles.remove(i);
+    }
+    score=0;
+  }
+  
+}
