@@ -1,55 +1,104 @@
-class Baez{
-PImage image;
-PVector location;
-PVector velocity;
-float jumpSpeed;
-float direction;
+public class Baez {
+  PImage baez;
+  PImage baezHead;
+  PImage duck;
+  PImage baezRun;
+  PImage baezSlide;
+  PVector location;
+  PVector velocity;
+  float jumpSpeed;
+  float direction;
+  float runCount=-5;
+  float hity=100;
+  float ychange =0; //for hitbox
+  public boolean jump;
+  public boolean ducking = false;
+  public float up;
+  
+  
+  public void setup(){
+  baezHead = loadImage("lightX.PNG");
+  baez = loadImage("baez.PNG");
+  baezRun=loadImage("baezRun.PNG");
+  duck = loadImage("baezSquat.PNG");
+  baezSlide=loadImage("baezSlide.PNG");
+  location = new PVector(200, ground);
+  velocity = new PVector(0,0);
+  direction = 1;
+  jumpSpeed=17;
 }
 
-void updateBaez()
+
+  void updateBaez()
 {
-    if(baez.location.y<ground){baez.velocity.y += g;}  
-    else{baez.velocity.y = 0;}
-    if (baez.location.y >= ground && up != 0)
-    {baez.velocity.y = -baez.jumpSpeed; }
-    
-    for (int i = 0; i< obstacles.size(); i++) {
-        if (obstacles.get(i).collided(baez.location.x-20, baez.location.y-50, 50, 100)) {
-          dead = true;
-        }
-      }
-      
-    PVector nextPosition = new PVector(baez.location.x, baez.location.y);
-    nextPosition.add(baez.velocity);
-    baez.location.y = nextPosition.y;
-    
-    pushMatrix();
-    translate(baez.location.x, baez.location.y-60);
-    scale(.1);
-    imageMode(CENTER);
-    if(jump==false){
-      if(runCount<0){
-      image(baez.image, 0, 0);
-      scale(1.2);
-    rotate(19.5);
-    image(baezHead.image, -300, -350);
-      }else{
-        image(baezRun, 0,0);
-       scale(1.2);
-    rotate(19.5);
-    image(baezHead.image, -300, -350); 
-      }
-      
-    }else{
-      image(duck,0,0);
-      scale(1.2);
-    rotate(19.5);
-    image(baezHead.image, -150, -200);
-    }
-    
-    popMatrix();
-    runCount++;
-    if(runCount>5){
-      runCount = -5;
+  if (location.y<ground) {
+    velocity.y += g;
+  } else {
+    velocity.y = 0;
+  }
+  if (location.y >= ground && up != 0)
+  {
+    velocity.y = -jumpSpeed;
+  }
+
+  for (int i = 0; i< obstacles.size(); i++) {
+    if (obstacles.get(i).collided(location.x+15, location.y-ychange, 60, hity)) {
+      //dead = true;
     }
   }
+
+  PVector nextPosition = new PVector(location.x, location.y);
+  nextPosition.add(velocity);
+  location.y = nextPosition.y;
+
+  pushMatrix();
+  translate(location.x, location.y-60);
+  scale(.1);
+  imageMode(CENTER);
+  if(ducking==true){
+    scale(1.1);
+    image(baezSlide, 0, 520);
+   // scale(1.2);
+    //rotate(19.5);
+   // image(baezHead, -30, -70);
+    hity=100;
+    ychange = hity/2-20;
+  }
+  else if (jump==false) {
+    if (runCount<0) {
+      image(baez, 0, 0);
+      scale(1.2);
+      rotate(19.5);
+      image(baezHead, -300, -350);
+      hity=170;
+      ychange=hity/2-39;
+    } else {
+      image(baezRun, 0, 0);
+      scale(1.2);
+      rotate(19.5);
+      image(baezHead, -300, -350);
+      hity=170;
+      ychange=hity/2-39;
+    }
+  }else{
+    image(duck, 0, 0);
+    scale(1.2);
+    rotate(19.5);
+    image(baezHead, -150, -200);
+    hity=100;
+    ychange=hity/2;
+  }
+
+  popMatrix();
+  runCount++;
+  if (runCount>5) {
+    runCount = -5;
+  }
+}
+
+
+public void draw(){
+  updateBaez();
+  
+}
+}
